@@ -40,11 +40,17 @@ resources.geocoder.options.apikey = 'your_api_key';
 
 ###Usage
 ```
-$location = App_Geocoder::factory() // By default it uses adapter configured through application config ini
+$location = App_Geocoder::factory() // By default it uses adapter configured in application config ini
   				->geocode('address_to_geocode')
 					->getLocations() // Returns matched locations container
 					->current() // Returns first (probably most accurate) location
 					;
+```
+To retrive location geometry point:
+```
+$point = $location->getCoordinates();
+$latitude = $point->getLatitude();
+$longitude = $point->getLongitude();
 ```
 For more information look in class definitions.
 
