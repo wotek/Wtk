@@ -47,11 +47,13 @@ $location = App_Geocoder::factory() // By default it uses adapter configured in 
 					;
 ```
 To retrive location geometry point:
+
 ```
 $point = $location->getCoordinates();
 $latitude = $point->getLatitude();
 $longitude = $point->getLongitude();
 ```
+
 For more information look in class definitions.
 
 App_Mail
