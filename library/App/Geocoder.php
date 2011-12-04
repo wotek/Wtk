@@ -51,16 +51,6 @@ class App_Geocoder {
 			$options['adapter']
 		);
 		$adapterName = implode('_', $adapterName);
-		/*
-		 * Load the adapter class.  This throws an exception
-		 * if the specified class cannot be loaded.
-		 */
-		// @codeCoverageIgnoreStart
-		if (!class_exists($adapterName)) {
-			require_once 'Zend/Loader.php';
-			Zend_Loader::loadClass($adapterName);
-		}
-		// @codeCoverageIgnoreEnd
 		
 		// create new instance
 		$instance = new self;
@@ -115,13 +105,25 @@ class App_Geocoder {
 		if ($adapter instanceof App_Geocoder_AdapterAbstract)
 			$this->_adapter = $adapter;
 
-		if (is_string($adapter))
+		if (is_string($adapter)) {
+			/*
+			 * Load the adapter class.  This throws an exception
+			 * if the specified class cannot be loaded.
+			 */
+			// @codeCoverageIgnoreStart
+			if (!class_exists($adapter)) {
+				require_once 'Zend/Loader.php';
+				Zend_Loader::loadClass($adapter);
+			}
+			// @codeCoverageIgnoreEnd
 			$this->_adapter = new $adapter($options);
-		else
-			throw new App_Geocoder_Adapter_Exception(
-					'Adapter should be adapter class name 
+
+			if (!$this->_adapter instanceof App_Geocoder_AdapterAbstract)
+				throw new App_Geocoder_Adapter_Exception(
+						'Adapter should be adapter class name 
 					or App_Geocoder_AdapterAbstract instance.'
-			);
+				);
+		}
 
 		return $this;
 	}
