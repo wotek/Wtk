@@ -29,6 +29,24 @@ App_Geocoder
 ---
 Geocoder is a wrapper for geocoding services. Currently, only Google geocoding service is implemented.
 
+###Configuration
+Geocoder has its own application resource loader. (Storing services API Keys in application config).
+Add this to your INI config file:
+
+```
+resources.geocoder.options.adapter = 'GoogleMaps';
+resources.geocoder.options.apikey = 'your_api_key';
+```
+
+###Usage
+```
+$location = App_Geocoder::factory() // By default it uses adapter configured through application config ini
+  				->geocode('address_to_geocode')
+					->getLocations() // Returns matched locations container
+					->current() // Returns first (probably most accurate) location
+					;
+```
+For more information look in class definitions.
 
 App_Mail
 ---
